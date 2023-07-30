@@ -17,12 +17,10 @@
 /*
  *
  */
-function RaceTrack(trackHeight, trackWidth)
+function RaceTrack(canvasIdAttr, sidePanelIdAttr)
 {
    var f = 'RaceTrack()';
-   UTILS.checkArgs(f, arguments, ['number', 'number']);
-   UTILS.assert(f, 0, trackHeight > 0);
-   UTILS.assert(f, 1, trackWidth  > 0);
+   UTILS.checkArgs(f, arguments, ['string', 'string']);
 
    // Public functions. /////////////////////////////////////////////////////////////////////////
 
@@ -31,19 +29,6 @@ function RaceTrack(trackHeight, trackWidth)
    this.getAtmosphericDragCoefficient = function () {return atmosphericDragCoefficient;};
 
    // Other public functions. -----------------------------------------------------------------//
-
-   /*
-    * This function should be run after the track
-    * HTML table element has been added to the DOM.
-    */
-   this.setOffsets = function (offsetTop, offsetLeft)
-   {
-      var f = 'RaceTrack.setOffsets()';
-      UTILS.checkArgs(f, arguments, ['number', 'number']);
-
-      trackTableOffsetTop  = offsetTop;
-      trackTableOffsetLeft = offsetLeft;
-   };
 
    /*
     * Convert window coordinates to those used inside the raceTrack.
@@ -148,15 +133,41 @@ function RaceTrack(trackHeight, trackWidth)
 
    // Initialisation functions. ---------------------------------------------------------------//
 
+   function _initCanvas(canvasIdAttr)
+   {
+      const canvas       = document.getElementById(canvasIdAttr);
+      const context      = canvas.getContext('2d');
+      const image        = new Image();
+      const canvasWidth  = Number(canvas.getAttribute('width' ));
+      const canvasHeight = Number(canvas.getAttribute('height'));
+
+      if (canvasWidth !== 1000 || canvasHeight !== 1000)
+      {
+         throw new Exception('Unexpected canvas width and/or height.');
+      }
+
+      image.src    = 'images/tracks/suzuka_short_1000x1000.png';
+      image.onload = function () {
+         context.drawImage(image, 0, 0, canvasWidth, canvasHeight);
+      }
+
+      const canvasBoundingRect = canvas.getBoundingClientRect();
+
+      trackOffsetTop  = canvasBoundingRect.top  + window.pageYOffset;
+      trackOffsetLeft = canvasBoundingRect.left + window.pageXOffset;
+   }
+
    // Private constants. ////////////////////////////////////////////////////////////////////////
 
-   const SCALING_FACTOR_X = trackWidth / 1;
-   const SCALING_FACTOR_Y = trackHeight / 1;
+   const canvasWidthPx    = 1000;
+   const canvasHeightPx   = 1000;
+   const SCALING_FACTOR_X = 1; //canvasWidthPx  / canvasWidthPx;
+   const SCALING_FACTOR_Y = 1; //canvasHeightPx / canvasHeightPx;
 
    // Private variables. ////////////////////////////////////////////////////////////////////////
 
    // Drag on racer due to atmosphere.
-   var atmosphericDragCoefficient = 1000000;
+   var atmosphericDragCoefficient = 0;
 
    // Offsets in pixels.
    // These must be set after the track table has been added to the DOM using this.setOffsets().
@@ -164,6 +175,8 @@ function RaceTrack(trackHeight, trackWidth)
    trackOffsetLeft = null;
 
    // Initialisation code. //////////////////////////////////////////////////////////////////////
+
+   _initCanvas(canvasIdAttr, sidePanelIdAttr);
 }
 
 /*******************************************END*OF*FILE********************************************/

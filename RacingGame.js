@@ -17,14 +17,12 @@
 /*
  *
  */
-function RacingGame()
+function RacingGame(canvasIdAttr, sidePanelIdAttr)
 {
    var f = 'RacingGame()';
-   UTILS.checkArgs(f, arguments, []);
+   UTILS.checkArgs(f, arguments, ['string', 'string']);
 
    // Public functions. /////////////////////////////////////////////////////////////////////////
-
-   this.getDiv = function () {return div;};
 
    /*
     *
@@ -34,11 +32,10 @@ function RacingGame()
       var f = 'RacingGame.init()';
       UTILS.checkArgs(f, arguments, []);
 
-      raceTrack.setOffsets(0, 150);
+      const body = document.querySelector('body');
 
-      div.appendChild(sidePanel.getDiv());
-      div.appendChild(racer.getImg());
-      div.appendChild(ghost.getImg());
+      body.appendChild(racer.getImg());
+      body.appendChild(ghost.getImg());
 
       mousePos = racer.pos.clone();
 
@@ -46,6 +43,7 @@ function RacingGame()
 
       setInterval(onTimerFire, deltaTime);
    };
+
 
    // Private functions. ////////////////////////////////////////////////////////////////////////
 
@@ -91,11 +89,11 @@ function RacingGame()
             // Start/finish line has been crossed in forward direction.
             if (lapTime !== null)
             {
-               sidePanel.addCompletedLapTime(lapTime);
+//               sidePanel.addCompletedLapTime(lapTime);
 
                if (lapTime < bestTimeThisSession)
                {
-                    ghostLap = racerLap;
+                  ghostLap = racerLap;
                }
             }
             lapTime = 0;
@@ -105,7 +103,7 @@ function RacingGame()
             throw new Exception(f, 'Unknown lapStatus.', 'Expected -1, 0, or 1.');
          }
 
-         sidePanel.setCurrentLapTime(lapTime);
+//         sidePanel.setCurrentLapTime(lapTime);
       }
       catch (e)
       {
@@ -134,20 +132,16 @@ function RacingGame()
 
    // Private variables. ////////////////////////////////////////////////////////////////////////
 
-   var raceTrack  = new RaceTrack(100, 100);
+   var raceTrack = new RaceTrack(canvasIdAttr, sidePanelIdAttr);
+   var racer     = new Racer(raceTrack, IMG({src: 'images/racers/racer5.jpg'}), 2);
+   var ghost     = new Racer(raceTrack, IMG({src: 'images/racers/ghost5.jpg'}), 2);
+   var racerLap  = null;
+   var ghostLap  = null;
+   var mousePos  = null;
+   var lapTime   = null;
 
-   var div        = document.createElement('div');
-
-   var sidePanel  = new SidePanel();
-   var racer      = new Racer(raceTrack, IMG({src: 'images/racers/racer5.jpg'}), 2);
-   var ghost      = new Racer(raceTrack, IMG({src: 'images/racers/ghost5.jpg'}), 2);
-
-   var racerLap   = null;
-   var ghostLap   = null;
-   var mousePos   = null;
-   var lapTime    = null;
-
-   var deltaTime  = 40;
+   const sidePanel = document.getElementById(sidePanelIdAttr);
+   const deltaTime = 40;
 }
 
 /*******************************************END*OF*FILE********************************************/

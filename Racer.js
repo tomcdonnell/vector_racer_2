@@ -90,6 +90,8 @@ function Racer(raceTrack, image, imageRadius)
          break;
       }
 
+      // See https://stackoverflow.com/questions/23325487/get-pixel-colour-in-javascript
+
       // a = F / m.
       var acc = (forceOnRacerDueToMouse.add(forceOnRacerDueToDrag)).divide(self.getMass());
 
@@ -98,7 +100,7 @@ function Racer(raceTrack, image, imageRadius)
 
       // s = s0 + vt.
       posOld   = self.pos;
-      self.pos = self.pos.add(self.vel.multiply(deltaTime));
+      self.pos = self.pos.add(self.vel.multiply(deltaTime / 10000));
 
       // Update position taking into account collisions with barriers.
       // (Note: self.pos and self.vel are updated as they are passed by reference.)
@@ -142,9 +144,9 @@ function Racer(raceTrack, image, imageRadius)
    (
       this,
       [
-         new VectorRec2d(2, 2), // Position.
+         new VectorRec2d(500, 500), // Position.
          new VectorRec2d(0, 0), // Velocity.
-         200000,                // Mass.
+         2,                 // Mass.
          0                      // Radius.
       ]
    );

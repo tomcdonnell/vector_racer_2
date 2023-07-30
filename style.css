@@ -4,7 +4,7 @@
 *
 * Filename: "style.css"
 *
-* Project: Racing.
+* Project: Vector Racing 2.
 *
 * Purpose: Sylesheet.
 *
@@ -14,28 +14,23 @@
 
 body
 {
+   font-family: verdana;
    margin: 0;
+   min-width: 1212px;
    padding: 0;
+   width: 1212px;
 }
 
-td.track
-{
-   background-color: #555555;
+#side-panel {
+   float: left;
+   height: 741px;
+   padding-left: 10px;
+   width: 200px;
 }
 
-td.barrier
-{
-   background-color: #009900;
-}
-
-td.start
-{
-   background-color: #005500;
-}
-
-td.finish
-{
-   background-color: #550000;
+#canvas {
+   border: 1px solid black;
+   float: right;
 }
 
 /*******************************************END*OF*FILE********************************************/

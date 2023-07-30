@@ -20,7 +20,6 @@ if (document.readyState !== 'loading') {
    document.addEventListener('DOMContentLoaded', onDocumentReady);
 }
 
-
 /*
  *
  */
@@ -31,9 +30,7 @@ function onDocumentReady(e)
       var f = 'onDocumentReady()';
       UTILS.checkArgs(f, arguments, ['Event']);
 
-      var racingGame = new RacingGame();
-
-      document.body.appendChild(racingGame.getDiv());
+      var racingGame = new RacingGame('canvas', 'side-panel');
 
       racingGame.init();
    }
